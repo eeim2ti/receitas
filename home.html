@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delícias Culinárias Brasileiras</title>
+    <style>
+        :root {
+            --primary-color: #e67e22;
+            --secondary-color: #f1c40f;
+            --accent-color: #d35400;
+            --light-bg: #f9f5f0;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --light-text: #666666;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .header h1:after {
+            content: "";
+            display: block;
+            width: 60%;
+            height: 4px;
+            background: var(--secondary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+        
+        .header p {
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 15px auto 0;
+            font-size: 1.1rem;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        #search-input {
+            width: 70%;
+            max-width: 600px;
+            padding: 15px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        #search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(230, 126, 34, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 18%;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-text);
+            pointer-events: none;
+        }
+        
+        /* Category Filter */
+        .category-section {
+            margin-bottom: 30px;
+        }
+        
+        .category-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Recipe Cards */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        .card h3 {
+            margin: 0 0 8px 0;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+        
+        .card-category {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: var(--light-bg);
+            color: var(--accent-color);
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .card-tag {
+            background-color: #f0f0f0;
+            color: var(--light-text);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+        }
+        
+        /* Recipe Detail */
+        .recipe-detail {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .recipe-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .recipe-header h2 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+        }
+        
+        .recipe-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .recipe-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .recipe-category {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .recipe-tag {
+            background: #f0f0f0;
+            color: var(--text-color);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .recipe-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .recipe-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .recipe-section {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .recipe-section-title {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .recipe-section-title:after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary-color);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        
+        .ingredients-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .ingredients-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ingredients-list li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 10px;
+        }
+        
+        .steps-list {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .steps-list li {
+            position: relative;
+            padding: 15px 0 15px 40px;
+            border-bottom: 1px solid #eee;
+            line-height: 1.6;
+        }
+        
+        .steps-list li:before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 15px;
+            background: var(--primary-color);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-size: 14px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 30px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .back-button {
+            display: block;
+            margin: 40px auto 0;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .back-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* No Results */
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            color: var(--light-text);
+            font-size: 1.1rem;
+            padding: 40px 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .no-results-icon {
+            font-size: 3rem;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            #search-input {
+                width: 85%;
+                padding: 12px 20px;
+            }
+            
+            .search-icon {
+                right: 10%;
+            }
+            
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .recipe-content {
+                flex-direction: column;
+            }
+            
+            .recipe-detail {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px 0;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-buttons {
+                gap: 8px;
+            }
+            
+            .category-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .recipe-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Delícias Culinárias Brasileiras</h1>
+            <p>Descubra as melhores receitas tradicionais do Brasil para todas as ocasiões</p>
+        </header>
+        
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Busque por receitas, ingredientes ou tags...">
+                <div class="search-icon">🔍</div>
+            </div>
+        </section>
+        
+        <section class="category-section">
+            <h3 class="category-title">Filtrar por categoria:</h3>
+            <div class="category-buttons">
+                <button class="category-btn active" data-category="all">Todas</button>
+                <button class="category-btn" data-category="doce">Doces</button>
+                <button class="category-btn" data-category="salgado">Salgados</button>
+                <button class="category-btn" data-category="principal">Pratos Principais</button>
+                <button class="category-btn" data-category="lanche">Lanches</button>
+                <button class="category-btn" data-category="bebida">Bebidas</button>
+            </div>
+        </section>
+        
+        <div class="cards-container" id="cards-container">
+            <!-- Cards serão gerados por JavaScript -->
+        </div>
+        
+        <div id="recipe-detail" class="recipe-detail"></div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const recipes = [
+                {
+                    name: "Feijoada Completa",
+                    category: "principal",
+                    image: "https://tinyurl.com/5bkm6u3k",
+                    tags: ["feijão", "porco", "tradicional", "brasileira"],
+                    ingredients: [
+                        "500g de feijão preto",
+                        "100g de carne-seca",
+                        "100g de costelinha de porco",
+                        "2 linguiças calabresas",
+                        "2 paio",
+                        "1 laranja",
+                        "2 folhas de louro",
+                        "Alho e cebola a gosto",
+                        "Sal e pimenta a gosto"
+                    ],
+                    instructions: [
+                        "Deixe o feijão e as carnes de molho por 12 horas.",
+                        "Cozinhe o feijão com as folhas de louro em água nova.",
+                        "Em outra panela, frite as carnes separadamente.",
+                        "Adicione as carnes ao feijão já cozido.",
+                        "Deixe cozinhar em fogo baixo por mais 1 hora.",
+                        "Tempere com alho, cebola, sal e pimenta.",
+                        "Sirva com arroz branco, couve refogada, farofa e laranja fatiada."
+                    ],
+                    video: "https://www.youtube.com/embed/4vP9G3Woyeo"
+                },
+                {
+                    name: "Moqueca Baiana",
+                    category: "principal",
+                    image: "https://tinyurl.com/ypbz6zfh",
+                    tags: ["peixe", "cozido", "bahia", "dendê"],
+                    ingredients: [
+                        "1kg de peixe em postas (cação, robalo ou outro de sua preferência)",
+                        "2 tomates maduros",
+                        "1 pimentão verde",
+                        "1 pimentão vermelho",
+                        "1 cebola grande",
+                        "200ml de leite de coco",
+                        "100ml de azeite de dendê",
+                        "Suco de 1 limão",
+                        "Coentro e cebolinha a gosto",
+                        "Sal e pimenta a gosto"
+                    ],
+                    instructions: [
+                        "Tempere o peixe com suco de limão, sal e pimenta e reserve por 15 minutos.",
+                        "Corte os tomates, pimentões e cebola em rodelas finas.",
+                        "Em uma panela de barro (ou panela comum), faça camadas alternadas de peixe e legumes.",
+                        "Regue com o leite de coco e o azeite de dendê.",
+                        "Cozinhe em fogo médio por cerca de 20 minutos com a panela tampada.",
+                        "Mexa delicadamente apenas uma vez durante o cozimento.",
+                        "Finalize com coentro e cebolinha picados.",
+                        "Sirva com arroz branco e pirão."
+                    ],
+                    video: "https://www.youtube.com/embed/0xXQLJtM5YQ"
+                },
+                {
+                    name: "Brigadeiro Gourmet",
+                    category: "doce",
+                    image: "https://tinyurl.com/4cjcr692",
+                    tags: ["chocolate", "festa", "sobremesa", "fácil"],
+                    ingredients: [
+                        "1 lata de leite condensado",
+                        "3 colheres de sopa de chocolate em pó 70%",
+                        "1 colher de sopa de manteiga sem sal",
+                        "Chocolate granulado para decorar"
+                    ],
+                    instructions: [
+                        "Em uma panela antiaderente, misture o leite condensado, o chocolate em pó e a manteiga.",
+                        "Leve ao fogo baixo, mexendo sem parar com uma colher de pau.",
+                        "Continue mexendo até que a mistura comece a desgrudar do fundo da panela (cerca de 10-15 minutos).",
+                        "Retire do fogo e transfira para um prato untado com manteiga.",
+                        "Deixe esfriar completamente em temperatura ambiente.",
+                        "Unte as mãos com manteiga e faça pequenas bolinhas.",
+                        "Passe cada brigadeiro no chocolate granulado.",
+                        "Coloque em forminhas de papel e sirva."
+                    ],
+                    video: "https://www.youtube.com/embed/1d5Xa2kYFkE"
+                },
+                {
+                    name: "Pão de Queijo Mineiro",
+                    category: "lanche",
+                    image: "https://tinyurl.com/2wwt74zd",
+                    tags: ["queijo", "mineiro", "café da manhã", "salgado"],
+                    ingredients: [
+                        "500g de polvilho doce",
+                        "250ml de leite",
+                        "100ml de óleo",
+                        "2 ovos grandes",
+                        "200g de queijo minas meia cura ralado",
+                        "100g de queijo parmesão ralado",
+                        "1 colher de chá de sal"
+                    ],
+                    instructions: [
+                        "Pré-aqueça o forno a 180°C.",
+                        "Ferva o leite com o óleo e o sal.",
+                        "Despeje sobre o polvilho em uma tigela grande e misture bem.",
+                        "Deixe esfriar até ficar morno.",
+                        "Adicione os ovos um a um, misturando bem após cada adição.",
+                        "Incorpore os queijos ralados.",
+                        "Sove a massa com as mãos até ficar homogênea.",
+                        "Faça bolinhas do tamanho de uma noz e coloque em forma untada.",
+                        "Asse por 25-30 minutos ou até ficarem dourados.",
+                        "Sirva quente."
+                    ],
+                    video: "https://www.youtube.com/embed/5J9GqJQd6v4"
+                },
+                {
+                    name: "Coxinha de Frango",
+                    category: "salgado",
+                    image: "https://i0.wp.com/canaldareceita.com.br/wp-content/uploads/2024/09/COXINHA-FIT.jpg?resize=768%2C461&ssl=1",
+                    tags: ["frango", "frito", "festas", "lanche"],
+                    ingredients: [
+                        "500g de peito de frango cozido e desfiado",
+                        "1 cebola picada",
+                        "2 dentes de alho picados",
+                        "2 colheres de sopa de óleo",
+                        "500ml de caldo de galinha",
+                        "500ml de leite",
+                        "500g de farinha de trigo",
+                        "Farinha de rosca para empanar",
+                        "2 ovos batidos",
+                        "Óleo para fritar",
+                        "Sal, pimenta e cheiro-verde a gosto"
+                    ],
+                    instructions: [
+                        "Refogue a cebola e o alho no óleo, adicione o frango desfiado e tempere com sal, pimenta e cheiro-verde. Reserve.",
+                        "Em uma panela, ferva o caldo de galinha com o leite.",
+                        "Adicione a farinha de trigo de uma vez e mexa vigorosamente até formar uma massa homogênea que desgruda da panela.",
+                        "Transfira a massa para uma superfície lisa e untada e deixe esfriar.",
+                        "Pegue pequenas porções da massa, abra na mão, coloque uma porção do recheio e modele no formato de coxinha.",
+                        "Passe cada coxinha no ovo batido e depois na farinha de rosca.",
+                        "Frite em óleo quente (180°C) até dourar por igual.",
+                        "Escorra em papel absorvente e sirva quente."
+                    ],
+                    video: "https://www.youtube.com/embed/6HZ4vY7B5mM"
+                },
+                {
+                    name: "Acarajé Tradicional",
+                    category: "lanche",
+                    image: "data:image/webp;base64,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",
+                    tags: ["baiano", "feijão", "dendê", "tradicional"],
+                    ingredients: [
+                        "500g de feijão fradinho",
+                        "2 cebolas grandes",
+                        "Sal a gosto",
+                        "Azeite de dendê para fritar",
+                        "Vatapá (opcional para acompanhar)",
+                        "Camarão seco (opcional para acompanhar)"
+                    ],
+                    instructions: [
+                        "Deixe o feijão de molho por 12 horas e descasque retirando a pele.",
+                        "Bata no liquidificador com as cebolas até formar uma pasta homogênea.",
+                        "Tempere com sal e bata novamente até ficar bem aerado.",
+                        "Aqueça o azeite de dendê em fogo médio.",
+                        "Frite colheradas da massa até dourar dos dois lados.",
+                        "Sirva quente com vatapá e camarão seco."
+                    ],
+                    video: "https://www.youtube.com/embed/7X8Ji6GxW8Y"
+                },
+                {
+                    name: "Bolo de Fubá Cremoso",
+                    category: "doce",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYL8RaspJQb-q9KSZJlzRaZoMTcD0QZ3THK-PCa0xLJwYAnJpr8hiX1A10&s=10",
+                    tags: ["fubá", "bolo", "caseiro", "café"],
+                    ingredients: [
+                        "2 xícaras de fubá",
+                        "1 xícara de farinha de trigo",
+                        "2 xícaras de açúcar",
+                        "1 xícara de leite",
+                        "4 ovos",
+                        "1/2 xícara de óleo",
+                        "1 colher de sopa de fermento em pó",
+                        "Erva-doce a gosto (opcional)"
+                    ],
+                    instructions: [
+                        "Pré-aqueça o forno a 180°C.",
+                        "Bata todos os ingredientes no liquidificador, exceto o fermento.",
+                        "Adicione o fermento e misture delicadamente.",
+                        "Despeje em forma untada e enfarinhada.",
+                        "Asse por cerca de 40 minutos ou até dourar.",
+                        "Faça o teste do palito: se sair limpo, está assado.",
+                        "Deixe esfriar antes de desenformar.",
+                        "Sirva em fatias."
+                    ]
+                },
+                {
+                    name: "Caipirinha de Limão",
+                    category: "bebida",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3puH6eFQGfyImfteMOB4wb6fbfztM2xklGW9UelTePBlMGk5zYI84GDWZ&s=10",
+                    tags: ["drink", "limão", "cachaça", "refrescante"],
+                    ingredients: [
+                        "1 limão grande",
+                        "2 colheres de sopa de açúcar",
+                        "60ml de cachaça",
+                        "Gelo a gosto"
+                    ],
+                    instructions: [
+                        "Corte o limão em pedaços pequenos, sem as extremidades.",
+                        "Em um copo baixo, coloque o limão e o açúcar.",
+                        "Macere bem com um pilão para extrair o suco.",
+                        "Adicione gelo até quase encher o copo.",
+                        "Complete com a cachaça e misture levemente.",
+                        "Decore com uma rodela de limão e sirva imediatamente."
+                    ]
+                },
+                {
+                    name: "Baião de Dois",
+                    category: "principal",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUtclypyGMbTC8jgcKI9DMNX93oBCzfO0lcg&s",
+                    tags: ["arroz", "feijão", "nordeste", "tradicional"],
+                    ingredients: [
+                        "2 xícaras de arroz",
+                        "1 xícara de feijão verde",
+                        "150g de queijo coalho",
+                        "100g de carne-seca dessalgada",
+                        "50g de paio",
+                        "1 cebola picada",
+                        "2 dentes de alho picados",
+                        "1 pimentão verde picado",
+                        "Coentro a gosto",
+                        "Sal e pimenta a gosto",
+                        "2 colheres de óleo"
+                    ],
+                    instructions: [
+                        "Cozinhe o feijão verde até ficar al dente. Reserve.",
+                        "Em uma panela, aqueça o óleo e refogue a cebola, alho e pimentão.",
+                        "Adicione a carne-seca e o paio em cubos e refogue bem.",
+                        "Acrescente o arroz e misture bem.",
+                        "Adicione o feijão cozido com seu caldo e água suficiente para cozinhar o arroz.",
+                        "Tempere com sal e pimenta.",
+                        "Quando o arroz estiver quase cozido, acrescente o queijo coalho em cubos e o coentro picado.",
+                        "Tampe a panela e deixe por mais 5 minutos em fogo baixo.",
+                        "Sirva quente."
+                    ]
+                },
+                {
+                    name: "Quindim",
+                    category: "doce",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8CAcipE6Qe_63pTDav-GlTtFutwkLjcSTrA&usqp=CAU",
+                    tags: ["coco", "sobremesa", "tradicional", "ovos"],
+                    ingredients: [
+                        "10 gemas",
+                        "1 xícara de açúcar",
+                        "1 xícara de coco ralado",
+                        "1 colher de sopa de manteiga",
+                        "1/2 xícara de leite de coco"
+                    ],
+                    instructions: [
+                        "Pré-aqueça o forno a 180°C.",
+                        "Unte forminhas de empada com manteiga.",
+                        "Em uma tigela, misture as gemas e o açúcar até obter um creme homogêneo.",
+                        "Adicione o coco ralado e o leite de coco, misturando bem.",
+                        "Distribua a mistura nas forminhas untadas.",
+                        "Asse em banho-maria por cerca de 30 minutos ou até ficar firme e dourado.",
+                        "Deixe esfriar e desenforme.",
+                        "Sirva frio."
+                    ]
+                },
+                {
+                    name: "Farofa de Banana",
+                    category: "acompanhamento",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpkX7VVuS4Rns3H_yew-5Hutv1eeBgJwJQE7WIdZjXs0fTm3fvA4D8s0M&s=10",
+                    tags: ["farofa", "banana", "acompanhamento", "fácil"],
+                    ingredients: [
+                        "4 bananas-da-terra maduras",
+                        "2 xícaras de farinha de mandioca",
+                        "1 cebola picada",
+                        "2 colheres de manteiga",
+                        "Sal a gosto",
+                        "Cheiro-verde picado"
+                    ],
+                    instructions: [
+                        "Descasque e corte as bananas em rodelas grossas.",
+                        "Em uma frigideira grande, derreta a manteiga e doure as bananas de ambos os lados. Reserve.",
+                        "Na mesma frigideira, refogue a cebola até ficar transparente.",
+                        "Adicione a farinha de mandioca e misture bem.",
+                        "Tempere com sal e adicione as bananas reservadas, misturando delicadamente.",
+                        "Finalize com cheiro-verde picado.",
+                        "Sirva como acompanhamento."
+                    ]
+                },
+                {
+                    name: "Canjica Cremosa",
+                    category: "doce",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkL41nRivyCML0hrqSY0IIzmo-ZXBJyNjNRtHx9muFJs77OE9Sacu4G2nG&s=10",
+                    tags: ["milho", "festa junina", "sobremesa", "leite condensado"],
+                    ingredients: [
+                        "2 xícaras de canjica branca",
+                        "1 lata de leite condensado",
+                        "1 litro de leite",
+                        "1/2 xícara de açúcar",
+                        "1 pau de canela",
+                        "5 cravos-da-índia",
+                        "Canela em pó para polvilhar"
+                    ],
+                    instructions: [
+                        "Lave a canjica e deixe de molho por 4 horas. Escorra.",
+                        "Em uma panela de pressão, cozinhe a canjica com água suficiente para cobrir por cerca de 30 minutos após pegar pressão.",
+                        "Abra a panela, acrescente o leite, leite condensado, açúcar, canela em pau e cravos.",
+                        "Cozinhe em fogo médio, mexendo sempre, até engrossar (cerca de 30 minutos).",
+                        "Retire o pau de canela e os cravos.",
+                        "Sirva quente ou frio, polvilhado com canela em pó."
+                    ]
+                },
+                {
+                    name: "Tapioca Recheada",
+                    category: "lanche",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJh2K-TBzi04QDQBdTgkmzvSxO3rQZJG0MQ&s",
+                    tags: ["tapioca", "café da manhã", "lanche rápido", "versátil"],
+                    ingredients: [
+                        "2 xícaras de goma de tapioca hidratada",
+                        "Recheio a gosto (queijo, coco, banana com canela, etc.)",
+                        "Óleo ou manteiga para untar"
+                    ],
+                    instructions: [
+                        "Peneire a goma de tapioca em uma peneira fina para ficar soltinha.",
+                        "Aqueça uma frigideira antiaderente em fogo médio.",
+                        "Com uma colher, espalhe a goma na frigideira formando uma camada uniforme.",
+                        "Deixe cozinhar por cerca de 2 minutos ou até a tapioca ficar firme.",
+                        "Adicione o recheio escolhido em uma das metades.",
+                        "Dobre a tapioca ao meio com uma espátula.",
+                        "Deixe por mais 1 minuto para derreter o recheio (se for o caso).",
+                        "Sirva quente."
+                    ]
+                },
+                {
+                    name: "Vatapá Baiano",
+                    category: "acompanhamento",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeHECtMWi_AwGmdbasVK4D4X6s3o4uHnLh-Yyg7nHEig-hJyPtUzoSjRQs&s=10",
+                    tags: ["baiano", "pão", "camarão", "dendê"],
+                    ingredients: [
+                        "4 pães franceses amanhecidos",
+                        "200g de camarão seco",
+                        "1 cebola grande",
+                        "2 dentes de alho",
+                        "1 pimentão verde",
+                        "1 xícara de leite de coco",
+                        "1/2 xícara de azeite de dendê",
+                        "Amendoim torrado moído a gosto",
+                        "Coentro e cebolinha a gosto",
+                        "Sal a gosto"
+                    ],
+                    instructions: [
+                        "Hidrate o camarão seco em água morna por 15 minutos. Reserve a água.",
+                        "Bata no liquidificador os pães molhados com um pouco da água do camarão.",
+                        "Refogue a cebola, alho e pimentão picados em um pouco de dendê.",
+                        "Adicione o camarão hidratado e refogue por 2 minutos.",
+                        "Junte a massa de pão e mexa bem.",
+                        "Adicione o leite de coco e o dendê restante, mexendo até obter uma consistência cremosa.",
+                        "Tempere com sal e finalize com amendoim moído, coentro e cebolinha.",
+                        "Sirva quente com acarajé ou arroz."
+                    ]
+                },
+                {
+                    name: "Cuscuz Paulista",
+                    category: "principal",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx9_IRLFnWW6kAbQ33P5U6wV4_wGhZKDaR6WzMz0XXGMIznFyZWiC-7_Ct&s=10",
+                    tags: ["cuscuz", "paulista", "salgado", "festa"],
+                    ingredients: [
+                        "3 xícaras de farinha de milho flocada",
+                        "2 xícaras de água fervente",
+                        "1 lata de atum em óleo",
+                        "1 tomate picado",
+                        "1 pimentão verde picado",
+                        "1 cebola picada",
+                        "2 ovos cozidos",
+                        "1/2 xícara de azeitonas",
+                        "1/2 xícara de ervilhas",
+                        "Cheiro-verde picado",
+                        "Sal e pimenta a gosto",
+                        "Óleo para untar"
+                    ],
+                    instructions: [
+                        "Em uma tigela grande, misture a farinha de milho com a água fervente até hidratar. Reserve.",
+                        "Em uma panela, refogue a cebola e o pimentão no óleo do atum.",
+                        "Adicione o atum desfiado, tomate, ervilhas e tempere com sal e pimenta.",
+                        "Misture esse refogado com a farinha de milho hidratada.",
+                        "Adicione as azeitonas, ovos picados e cheiro-verde.",
+                        "Unte uma forma de pudim com óleo e coloque a mistura, pressionando bem.",
+                        "Deixe descansar por 15 minutos e desenforme.",
+                        "Sirva em fatias."
+                    ]
+                },
+                {
+                    name: "Pudim de Leite",
+                    category: "doce",
+                    image: "data:image/jpeg;base64,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",
+                    tags: ["sobremesa", "leite condensado", "clássico", "fácil"],
+                    ingredients: [
+                        "1 xícara de açúcar",
+                        "1 lata de leite condensado",
+                        "2 medidas da lata de leite",
+                        "3 ovos"
+                    ],
+                    instructions: [
+                        "Derreta o açúcar em fogo baixo até formar um caramelo dourado.",
+                        "Despeje o caramelo em uma forma de pudim e reserve.",
+                        "No liquidificador, bata o leite condensado, o leite e os ovos até ficar homogêneo.",
+                        "Despeje na forma caramelizada.",
+                        "Asse em banho-maria em forno pré-aquecido a 180°C por cerca de 1 hora.",
+                        "Deixe esfriar completamente antes de desenformar.",
+                        "Sirva gelado."
+                    ]
+                },
+                {
+                    name: "Arroz Doce Cremoso",
+                    category: "doce",
+                    image: "data:image/webp;base64,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",
+                    tags: ["arroz", "sobremesa", "tradicional", "canela"],
+                    ingredients: [
+                        "1 xícara de arroz branco",
+                        "1 litro de leite",
+                        "1 lata de leite condensado",
+                        "1 pau de canela",
+                        "Canela em pó para polvilhar"
+                    ],
+                    instructions: [
+                        "Cozinhe o arroz em água com o pau de canela até ficar macero.",
+                        "Escorra o excesso de água e retire o pau de canela.",
+                        "Adicione o leite e cozinhe em fogo baixo, mexendo sempre.",
+                        "Quando o arroz estiver quase seco, adicione o leite condensado e misture bem.",
+                        "Cozinhe por mais 5 minutos, mexendo sempre.",
+                        "Retire do fogo e deixe esfriar.",
+                        "Polvilhe com canela em pó antes de servir."
+                    ]
+                },
+                {
+                    name: "Bolinho de Chuva",
+                    category: "lanche",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLBzdaPtmAaK5fFsOQlmq_sylmRBBVAeKC1uWpwWGPBN8tj4vDXsS_hwe3&s=10",
+                    tags: ["lanche", "fácil", "café", "caseiro"],
+                    ingredients: [
+                        "2 xícaras de farinha de trigo",
+                        "1/2 xícara de açúcar",
+                        "1 ovo",
+                        "1/2 xícara de leite",
+                        "1 colher de sopa de fermento em pó",
+                        "1 pitada de sal",
+                        "Óleo para fritar",
+                        "Canela e açúcar para polvilhar"
+                    ],
+                    instructions: [
+                        "Misture todos os ingredientes secos em uma tigela.",
+                        "Adicione o ovo e o leite, mexendo até formar uma massa homogênea.",
+                        "Aqueça o óleo em uma panela em fogo médio.",
+                        "Com duas colheres, forme bolinhos e frite até dourar por igual.",
+                        "Escorra em papel absorvente.",
+                        "Misture açúcar e canela em pó e polvilhe sobre os bolinhos quentes.",
+                        "Sirva imediatamente."
+                    ]
+                },
+                {
+                    name: "Mousse de Maracujá",
+                    category: "doce",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlSwUbaq1UBmerLjWJzqmPqv0oiDJFYJKf-A&s",
+                    tags: ["sobremesa", "fruta", "leve", "fácil"],
+                    ingredients: [
+                        "1 lata de leite condensado",
+                        "1 lata de creme de leite",
+                        "1/2 xícara de suco de maracujá concentrado",
+                        "Polpa de 1 maracujá para decorar"
+                    ],
+                    instructions: [
+                        "Bata no liquidificador o leite condensado, o creme de leite e o suco de maracujá.",
+                        "Despeje em taças individuais e leve à geladeira por pelo menos 4 horas.",
+                        "Decore com a polpa de maracujá antes de servir."
+                    ]
+                },
+                {
+                    name: "Caldo de Mandioca",
+                    category: "principal",
+                    image: "data:image/jpeg;base64,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",
+                    tags: ["sopa", "mandioca", "confort food", "inverno"],
+                    ingredients: [
+                        "500g de mandioca descascada e cortada em cubos",
+                        "1 litro de água",
+                        "1 cubo de caldo de galinha",
+                        "1 cebola picada",
+                        "2 dentes de alho picados",
+                        "2 colheres de sopa de óleo",
+                        "Cheiro-verde picado",
+                        "Sal e pimenta a gosto",
+                        "Torradas para acompanhar"
+                    ],
+                    instructions: [
+                        "Cozinhe a mandioca na água com o caldo de galinha até ficar macia.",
+                        "Em outra panela, refogue a cebola e o alho no óleo.",
+                        "Adicione a mandioca cozida com seu caldo e tempere com sal e pimenta.",
+                        "Deixe ferver por 5 minutos e amasse levemente alguns pedaços de mandioca para engrossar o caldo.",
+                        "Finalize com cheiro-verde picado.",
+                        "Sirva quente com torradas."
+                    ]
+                },
+                {
+                    name: "Pamonha Salgada",
+                    category: "lanche",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdgGYMQjIhaPOcfeqVoas8pKiiG0yU8lr2bw&usqp=CAU",
+                    tags: ["milho", "tradicional", "festas juninas", "caseiro"],
+                    ingredients: [
+                        "6 espigas de milho verde",
+                        "1 xícara de leite",
+                        "1 colher de sopa de manteiga",
+                        "1 colher de sopa de açúcar",
+                        "1 colher de chá de sal",
+                        "Palha de milho para embrulhar"
+                    ],
+                    instructions: [
+                        "Descasque o milho e reserve as palhas mais bonitas.",
+                        "Rale o milho ou corte os grãos e bata no liquidificador com um pouco do leite.",
+                        "Passe a massa por uma peneira para remover os cascos.",
+                        "Misture o restante do leite, a manteiga, o açúcar e o sal.",
+                        "Lave bem as palhas reservadas e escorra.",
+                        "Coloque cerca de 1/2 xícara da massa em cada palha e dobre como um pacote.",
+                        "Amarre com tiras das próprias palhas.",
+                        "Cozinhe em água fervente por cerca de 40 minutos.",
+                        "Escorra e sirva quente."
+                    ]
+                }
+            ];
+
+            // Elementos DOM
+            const cardsContainer = document.getElementById('cards-container');
+            const recipeDetail = document.getElementById('recipe-detail');
+            const searchInput = document.getElementById('search-input');
+            const searchContainer = document.querySelector('.search-section');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            // Variáveis de estado
+            let currentCategory = 'all';
+            let currentSearch = '';
+            
+            // Função para renderizar os cards
+            function renderCards() {
+                cardsContainer.innerHTML = '';
+                
+                // Filtra as receitas por categoria e termo de busca
+                const filteredRecipes = recipes.filter(recipe => {
+                    const matchesCategory = currentCategory === 'all' || recipe.category === currentCategory;
+                    const matchesSearch = currentSearch === '' || 
+                                        recipe.name.toLowerCase().includes(currentSearch.toLowerCase()) || 
+                                        recipe.tags.some(tag => tag.includes(currentSearch.toLowerCase())) ||
+                                        recipe.ingredients.some(ing => ing.toLowerCase().includes(currentSearch.toLowerCase()));
+                    return matchesCategory && matchesSearch;
+                });
+                
+                if (filteredRecipes.length === 0) {
+                    cardsContainer.innerHTML = `
+                        <div class="no-results">
+                            <div class="no-results-icon">🍳</div>
+                            <h3>Nenhuma receita encontrada</h3>
+                            <p>Tente outro termo de busca ou selecione uma categoria diferente</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filteredRecipes.forEach(recipe => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${recipe.image}" alt="${recipe.name}" class="card-image">
+                        <div class="card-content">
+                            <span class="card-category">${formatCategory(recipe.category)}</span>
+                            <h3>${recipe.name}</h3>
+                            <div class="card-tags">
+                                ${recipe.tags.slice(0, 3).map(tag => `<span class="card-tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showRecipe(recipe));
+                    cardsContainer.appendChild(card);
+                });
+            }
+            
+            // Formata a categoria para exibição
+            function formatCategory(category) {
+                const categories = {
+                    'principal': 'Prato Principal',
+                    'doce': 'Doce',
+                    'salgado': 'Salgado',
+                    'lanche': 'Lanche',
+                    'bebida': 'Bebida',
+                    'acompanhamento': 'Acompanhamento'
+                };
+                return categories[category] || category;
+            }
+            
+            // Função para mostrar detalhes da receita
+            function showRecipe(recipe) {
+                // Converte instruções de string para array se necessário
+                const instructions = Array.isArray(recipe.instructions) ? 
+                    recipe.instructions : 
+                    recipe.instructions.split('\n').filter(step => step.trim() !== '');
+                
+                recipeDetail.innerHTML = `
+                    <div class="recipe-header">
+                        <h2>${recipe.name}</h2>
+                        <div class="recipe-meta">
+                            <span class="recipe-category">${formatCategory(recipe.category)}</span>
+                            <div class="recipe-tags">
+                                ${recipe.tags.map(tag => `<span class="recipe-tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <img src="${recipe.image}" alt="${recipe.name}" class="recipe-image">
+                    
+                    <div class="recipe-content">
+                        <div class="recipe-column">
+                            <div class="recipe-section">
+                                <h3 class="recipe-section-title">Ingredientes</h3>
+                                <ul class="ingredients-list">
+                                    ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="recipe-column">
+                            <div class="recipe-section">
+                                <h3 class="recipe-section-title">Modo de Preparo</h3>
+                                <ol class="steps-list">
+                                    ${instructions.map(step => `<li>${step}</li>`).join('')}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${recipe.video ? `
+                    <div class="recipe-section">
+                        <h3 class="recipe-section-title">Vídeo da Receita</h3>
+                        <div class="video-container">
+                            <iframe src="${recipe.video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <button class="back-button" id="back-button">← Voltar para todas as receitas</button>
+                `;
+                
+                // Esconde elementos não necessários
+                cardsContainer.style.display = 'none';
+                searchContainer.style.display = 'none';
+                document.querySelector('.category-section').style.display = 'none';
+                recipeDetail.style.display = 'block';
+                
+                // Rola para o topo da página
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Adiciona evento ao botão de voltar
+                document.getElementById('back-button').addEventListener('click', hideRecipe);
+            }
+            
+            // Função para voltar à lista de receitas
+            function hideRecipe() {
+                recipeDetail.style.display = 'none';
+                cardsContainer.style.display = 'grid';
+                searchContainer.style.display = 'block';
+                document.querySelector('.category-section').style.display = 'block';
+                renderCards();
+            }
+            
+            // Evento de busca
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value;
+                renderCards();
+            });
+            
+            // Eventos dos botões de categoria
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove a classe active de todos os botões
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // Adiciona a classe active apenas ao botão clicado
+                    button.classList.add('active');
+                    // Atualiza a categoria atual
+                    currentCategory = button.dataset.category;
+                    // Renderiza os cards com o novo filtro
+                    renderCards();
+                });
+            });
+            
+            // Inicializa a página
+            renderCards();
+        });
+    </script>
+</body>
+</html>
